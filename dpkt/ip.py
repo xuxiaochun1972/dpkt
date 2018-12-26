@@ -5,8 +5,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 
 from . import dpkt
-from .decorators import deprecated
 from .compat import iteritems
+
 
 class IP(dpkt.Packet):
     """Internet Protocol.
@@ -116,10 +116,7 @@ class IP(dpkt.Packet):
         if ol < 0:
             raise dpkt.UnpackError('invalid header length')
         self.opts = buf[self.__hdr_len__:self.__hdr_len__ + ol]
-        if self.len:
-            buf = buf[self.__hdr_len__ + ol:self.len]
-        else:  # very likely due to TCP segmentation offload
-            buf = buf[self.__hdr_len__ + ol:]
+        buf = buf[self.__hdr_len__ + ol:]
         try:
             self.data = self._protosw[self.p](buf) if self.offset == 0 else buf
             setattr(self, self.data.__class__.__name__.lower(), self.data)
