@@ -51,7 +51,7 @@ class SCTP(dpkt.Packet):
         while self.data:
             chunk = Chunk(self.data)
             l.append(chunk)
-            self.data = self.data[len(chunk):]
+            self.data = self.data[int((len(chunk)+4)/4)*4:]
         self.data = self.chunks = l
 
     def __len__(self):
